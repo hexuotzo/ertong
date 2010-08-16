@@ -1,0 +1,7 @@
+div.left{
+    width:200px;float:left;padding-right:11px;
+}
+div.middle{
+    position:absolute;background:red;width:475px;margin-right: auto;margin-left: auto; padding: 0px;
+    }
+div.right{float:right;background:blue;width:200px}

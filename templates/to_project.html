@@ -1,0 +1,63 @@
+{%load custom%}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{project.name}}</title>
+<script src="/site_media/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".piao").click(function() {
+            $(".go").hide();
+            price = $(this).find("a").text();
+            f = $(this).parents(".ticket").find(".go");
+            f.find("input#pay").val(price);
+            f.show("slow");
+        });
+    });
+</script>
+
+</head>
+
+<body>
+
+    <font color="red">项目资料</font>：<p>
+
+    <font color="blue">名称</font>：{{project.name}}<p>
+    <font color="blue">类型</font>：{{project.type}}<p>
+    <font color="blue">介绍</font>：{{project.info}}<p>
+    <font color="blue">价格</font>：{{project.pay}}<p>
+
+    ------订票------<p>
+    {% for p in perform %}
+    <div class="ticket">
+        <font color="blue">演出时间</font>：{{p.play_time}} &nbsp;,
+        <font color="blue">价格</font>：［
+            {% for t in p.id|get_ticket %}
+                {% if t.sold_out %}
+                    <font color=gray>{{t.price}}{%if not forloop.last %}&nbsp;|{% endif %}</font>
+                {% else %}
+                    <span class="piao">
+                        <a href="#" style="TEXT-DECORATION:none">
+                            {{t.price}}
+                        </a>{%if not forloop.last %}&nbsp;|{% endif %}
+                        
+                    </span>
+                {% endif %}
+            {% endfor %}］
+            <p>
+        <span class="go" style="display:none;">
+            <form method='POST' action="/order/">
+                <input id="pay" type="hidden" name="pay" value="" />
+                <input type="hidden" name="perform" value="{{p.id}}" />
+                姓名：<input type="text" name="name" value="" /><p>
+                电话：<input type="text" name="phonenum" value="" /><p>
+                地址：<input type="text" name="user_area" value="" /><p>
+                数量：<input type="text" name="number" value="" /><p>
+                <input type="submit" value="确认"><p>
+            </form> 
+        </span>
+    </div>
+    {% endfor %}
+
+</body>
+</html>
